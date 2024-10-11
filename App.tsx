@@ -3,7 +3,9 @@ import { Text, SafeAreaView } from 'react-native';
 function App() {
   return (
     <SafeAreaView>
-      <Text>Event Management Dashboard</Text>
+      <Text style={{ backgroundColor: 'white', color: 'black' }}>
+        Event Management Dashboard
+      </Text>
     </SafeAreaView>
   );
 }

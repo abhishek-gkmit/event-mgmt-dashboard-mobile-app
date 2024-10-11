@@ -1,4 +1,4 @@
-package com.eventmgmtdashboardapp
+package com.eventMgmtDashboardApp
 
 import android.app.Application
 import com.facebook.react.PackageList
