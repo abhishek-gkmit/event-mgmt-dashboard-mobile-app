@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     padding: 10,
     gap: 10,
     borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0)',
+    borderColor: colors.blackTransparent,
     alignItems: 'center',
   },
 
@@ -20,21 +20,26 @@ const styles = StyleSheet.create({
   },
 
   inputContainerError: {
-    borderColor: 'red',
+    borderColor: colors.error,
   },
 
   inputLabel: {
-    color: 'black',
+    color: colors.black,
     marginBottom: 5,
   },
 
   textInput: {
-    color: '#000',
+    color: colors.black,
     fontSize: 14,
     padding: 0,
     flexGrow: 1,
     flexShrink: 1,
     textAlignVertical: 'center',
+  },
+
+  iconStyle: {
+    padding: 0,
+    margin: 0,
   },
 
   errorMsg: {

@@ -59,22 +59,20 @@ function Login({ navigation }) {
 
       const user = await API.getUserByEmail(formData.email);
       if (!user) {
-        errors.email = 'Email does not exist';
-        setErrors(errors);
+        Alert.alert('Email does not exists');
         return;
       }
 
       if (formData.password !== user.password) {
-        errors.password = 'Wrong password';
-        setErrors(errors);
+        Alert.alert('Password does not match');
         return;
       }
 
       user.id && (await API.setLoggedInUser(user.id));
 
-      // clearing errors after successfull verification
+      // clearing errors after successful verification
       setErrors({});
-      Alert.alert('Login successfull');
+      Alert.alert('Login successful');
     },
     [formData],
   );
@@ -87,7 +85,7 @@ function Login({ navigation }) {
     <SafeAreaView style={styles.loginFormContainer}>
       <View style={styles.loginForm}>
         <View>
-          <View>
+          <View style={styles.headingContainer}>
             <Text style={styles.heading}>Login here</Text>
 
             <Text style={[styles.heading, styles.welcome]}>Welcome back!</Text>
@@ -101,7 +99,7 @@ function Login({ navigation }) {
             setValue={value => handleChange({ email: value })}
             icon={{ name: 'email', color: colors.primary }}
             ref={inputRef}
-            errorMsg={errors.email && errors.email}
+            errorMsg={errors.email}
           />
 
           <Input
@@ -112,10 +110,15 @@ function Login({ navigation }) {
             setValue={value => handleChange({ password: value })}
             secureTextEntry
             icon={{ name: 'lock', color: colors.primary }}
-            errorMsg={errors.password && errors.password}
+            errorMsg={errors.password}
           />
 
-          <Button title="Sign in" onPress={handleSubmit} fontSize={18} />
+          <Button
+            title="Sign in"
+            onPress={handleSubmit}
+            btnStyle={styles.btnStyle}
+            btnTextStyle={styles.btnTextStyle}
+          />
         </View>
 
         <View style={styles.signupOptionContainer}>

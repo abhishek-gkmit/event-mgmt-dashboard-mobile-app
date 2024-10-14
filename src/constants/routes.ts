@@ -1,7 +1,7 @@
-const routes = {
+const ROUTES = {
   Login: 'Login',
   Signup: 'Signup',
   Dashboard: 'Dashboard',
 };
 
-export default routes;
+export default ROUTES;

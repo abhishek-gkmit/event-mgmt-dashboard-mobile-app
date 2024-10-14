@@ -100,7 +100,7 @@ function Signup({ navigation }) {
         isError = true;
       }
 
-      if (formData.confirmPassword.trim() === '') {
+      if (formData.confirmPassword?.trim() === '') {
         errors.confirmPassword = 'Please confirm password';
         isError = true;
       } else if (formData.password !== formData.confirmPassword) {
@@ -115,18 +115,13 @@ function Signup({ navigation }) {
 
       const emailExists = await API.emailExists(formData.email);
       if (emailExists) {
-        errors.email =
-          'This email already exists. Please use a different email.';
+        Alert.alert('Email already exists. Please use a different email');
+        return;
       }
 
       const usernameExists = await API.usernameExists(formData.username);
       if (usernameExists) {
-        errors.username =
-          'This username already exists. Please use a different username.';
-      }
-
-      if (emailExists || usernameExists) {
-        setErrors(errors);
+        Alert.alert('Username already exists. Please use a different username');
         return;
       }
 
@@ -138,9 +133,9 @@ function Signup({ navigation }) {
         return;
       }
 
-      // emptying erros after successfull verification
+      // emptying erros after successful verification
       setErrors({});
-      Alert.alert('Signup successfull');
+      Alert.alert('Signup successful');
     },
     [formData],
   );
@@ -153,89 +148,94 @@ function Signup({ navigation }) {
     <SafeAreaView style={styles.signupFormContainer}>
       <View style={styles.signupForm}>
         <View>
-          <Text style={[styles.signupFormHeading, { color: colors.primary }]}>
-            Sign-Up
-          </Text>
+          <View style={styles.headingContainer}>
+            <Text style={[styles.heading]}>Sign-Up</Text>
+          </View>
+
+          <Input
+            label="Full Name"
+            autoCapitalize="none"
+            placeholder="Enter full name"
+            value={formData.name}
+            setValue={value => handleChange({ name: value })}
+            icon={{ name: 'alpha-a-box', color: colors.primary }}
+            ref={inputRef}
+            errorMsg={errors.name}
+          />
+
+          <Input
+            label="Email"
+            autoCapitalize="none"
+            keyboardType="email-address"
+            placeholder="Enter email"
+            value={formData.email}
+            setValue={value => handleChange({ email: value })}
+            icon={{ name: 'email', color: colors.primary }}
+            errorMsg={errors.email}
+          />
+
+          <DropdownBox
+            name="Select Gender"
+            label="Gender"
+            items={[
+              { value: 'male', name: 'Male' },
+              { value: 'female', name: 'Female' },
+              { value: 'other', name: 'Other' },
+            ]}
+            value={formData.gender}
+            setValue={value => handleChange({ gender: value })}
+            errorMsg={errors.gender}
+          />
+
+          <Input
+            label="Username"
+            autoCapitalize="none"
+            placeholder="Enter username"
+            value={formData.username}
+            setValue={value => handleChange({ username: value })}
+            icon={{ name: 'at', color: colors.primary }}
+            errorMsg={errors.username}
+          />
+
+          <Input
+            label="Age"
+            inputMode="numeric"
+            placeholder="Enter age"
+            value={formData.age}
+            setValue={value => handleChange({ age: value })}
+            icon={{ name: 'account', color: colors.primary }}
+            errorMsg={errors.age}
+          />
+
+          <Input
+            label="Password"
+            inputMode="text"
+            placeholder="Enter password"
+            value={formData.password}
+            setValue={value => handleChange({ password: value })}
+            secureTextEntry
+            icon={{ name: 'lock', color: colors.primary }}
+            errorMsg={errors.password}
+          />
+
+          <Input
+            label="Confirm Password"
+            inputMode="text"
+            placeholder="Confirm password"
+            value={formData.confirmPassword}
+            setValue={value => handleChange({ confirmPassword: value })}
+            secureTextEntry
+            icon={{ name: 'lock', color: colors.primary }}
+            errorMsg={errors.confirmPassword}
+          />
+
+          <Button
+            title="Sign up"
+            onPress={handleSubmit}
+            btnStyle={styles.btnStyle}
+            btnTextStyle={styles.btnTextStyle}
+          />
         </View>
-
-        <Input
-          label="Full Name"
-          autoCapitalize="none"
-          placeholder="Enter full name"
-          value={formData.name}
-          setValue={value => handleChange({ name: value })}
-          icon={{ name: 'alpha-a-box', color: colors.primary }}
-          ref={inputRef}
-          errorMsg={errors.name && errors.name}
-        />
-
-        <Input
-          label="Email"
-          autoCapitalize="none"
-          keyboardType="email-address"
-          placeholder="Enter email"
-          value={formData.email}
-          setValue={value => handleChange({ email: value })}
-          icon={{ name: 'email', color: colors.primary }}
-          errorMsg={errors.email && errors.email}
-        />
-
-        <DropdownBox
-          name="Select Gender"
-          label="Gender"
-          items={[
-            { value: 'male', name: 'Male' },
-            { value: 'female', name: 'Female' },
-            { value: 'other', name: 'Other' },
-          ]}
-          value={formData.gender}
-          setValue={value => handleChange({ gender: value })}
-          errorMsg={errors.gender && errors.gender}
-        />
-
-        <Input
-          label="Username"
-          autoCapitalize="none"
-          placeholder="Enter username"
-          value={formData.username}
-          setValue={value => handleChange({ username: value })}
-          icon={{ name: 'at', color: colors.primary }}
-          errorMsg={errors.username && errors.username}
-        />
-
-        <Input
-          label="Age"
-          inputMode="numeric"
-          placeholder="Enter age"
-          value={formData.age}
-          setValue={value => handleChange({ age: value })}
-          icon={{ name: 'account', color: colors.primary }}
-          errorMsg={errors.age && errors.age}
-        />
-
-        <Input
-          label="Password"
-          inputMode="text"
-          placeholder="Enter password"
-          value={formData.password}
-          setValue={value => handleChange({ password: value })}
-          secureTextEntry
-          icon={{ name: 'lock', color: colors.primary }}
-          errorMsg={errors.password && errors.password}
-        />
-
-        <Input
-          label="Confirm Password"
-          inputMode="text"
-          placeholder="Confirm password"
-          value={formData.confirmPassword}
-          setValue={value => handleChange({ confirmPassword: value })}
-          secureTextEntry
-          icon={{ name: 'lock', color: colors.primary }}
-          errorMsg={errors.confirmPassword && errors.confirmPassword}
-        />
-
-        <Button title="Sign up" fontSize={18} onPress={handleSubmit} />
 
         <View style={styles.loginOptionContainer}>
           <Text style={styles.loginQuestion}>You have an account?</Text>

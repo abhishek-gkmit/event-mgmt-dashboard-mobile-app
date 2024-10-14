@@ -16,14 +16,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     borderWidth: 1,
-    borderColor: 'rgba(255, 0, 0, 0)',
+    borderColor: colors.blackTransparent,
   },
   dropdownShowButtonError: {
     borderWidth: 1,
-    borderColor: 'rgba(255, 0, 0, 1)',
+    borderColor: colors.error,
   },
   dropdownBox: {
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     borderRadius: 10,
     padding: 10,
     gap: 10,
@@ -36,15 +36,15 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   dropdownLabel: {
-    color: 'black',
+    color: colors.black,
     marginBottom: 5,
   },
   dropdownBoxName: {
-    color: 'gray',
+    color: colors.gray,
     fontSize: 14,
   },
   dropdownBoxSelectValueName: {
-    color: 'black',
+    color: colors.black,
     fontSize: 14,
   },
   dropdownItem: {
@@ -59,17 +59,22 @@ const styles = StyleSheet.create({
   },
   dropdownItemText: {
     width: '100%',
-    color: 'black',
+    color: colors.black,
     fontSize: 18,
   },
   dropdownItemTextSelected: {
-    color: 'white',
+    color: colors.white,
   },
   errorMsg: {
     color: colors.error,
     paddingHorizontal: 10,
     marginTop: 5,
     textAlign: 'right',
+    fontSize: 12,
+  },
+
+  btnTextStyle: {
+    fontSize: 18,
   },
 });
 

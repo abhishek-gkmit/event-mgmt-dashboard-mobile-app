@@ -28,7 +28,7 @@ function DropdownBoxModal({
           {children}
           <Button
             title="Cancel"
-            fontSize={18}
+            btnTextStyle={styles.btnTextStyle}
             onPress={() => setDropdownVisible(false)}
           />
         </View>
@@ -46,6 +46,18 @@ function DropdownBox({
   errorMsg,
 }: DropdownProps) {
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [choiceChanged, setChoiceChanged] = useState(false);
+
+  const setDropdownVisibleWrapper = useCallback(
+    (dropdownVisible: boolean) => {
+      if (!choiceChanged) {
+        setChoiceChanged(true);
+      }
+
+      setDropdownVisible(dropdownVisible);
+    },
+    [setDropdownVisible, setChoiceChanged],
+  );
 
   const setValueWrapper = useCallback(
     function setValueWrapper(nameOfItem: string) {
@@ -91,7 +103,7 @@ function DropdownBox({
               styles.dropdownShowButtonError,
             )
         }
-        onPress={() => setDropdownVisible(dropdownVisible => !dropdownVisible)}>
+        onPress={() => setDropdownVisibleWrapper(!dropdownVisible)}>
         {/* showing name at start instead of the value*/}
         {value === '' ? (
           <Text style={styles.dropdownBoxName}>{name}</Text>
@@ -102,11 +114,19 @@ function DropdownBox({
         )}
       </Pressable>
     );
-  }, [items, value, name, errorMsg, setDropdownVisible]);
+  }, [items, value, name, errorMsg, setDropdownVisibleWrapper]);
 
   const dropdownLabel = useMemo(() => {
     return label ? <Text style={styles.dropdownLabel}>{label}</Text> : null;
   }, [label]);
+
+  const errorMsgToRender = useMemo(() => {
+    return choiceChanged ? (
+      <Text style={styles.errorMsg}> </Text>
+    ) : (
+      <Text style={styles.errorMsg}>{errorMsg}</Text>
+    );
+  }, [errorMsg, choiceChanged]);
 
   return (
     <View>
@@ -114,11 +134,11 @@ function DropdownBox({
 
       {showDropdownModalBtn}
 
-      <Text style={styles.errorMsg}>{errorMsg}</Text>
+      {errorMsgToRender}
 
       <DropdownBoxModal
         dropdownVisible={dropdownVisible}
-        setDropdownVisible={setDropdownVisible}
+        setDropdownVisible={setDropdownVisibleWrapper}
         name={name}>
         {itemsToRender}
       </DropdownBoxModal>

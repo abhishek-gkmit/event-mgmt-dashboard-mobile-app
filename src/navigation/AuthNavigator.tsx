@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '@screens/Login';
 import Signup from '@screens/Signup';
 
+import ROUTES from '@constants/routes';
+
 const Stack = createNativeStackNavigator<StackParamList>();
 
 function AuthNavigator() {
@@ -11,12 +13,12 @@ function AuthNavigator() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
-          name="Login"
+          name={ROUTES.Login}
           component={Login}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Signup"
+          name={ROUTES.Signup}
           component={Signup}
           options={{
             gestureEnabled: false,

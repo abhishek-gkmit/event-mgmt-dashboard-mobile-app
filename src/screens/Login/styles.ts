@@ -4,7 +4,7 @@ import colors from '@constants/colors';
 
 const styles = StyleSheet.create({
   loginFormContainer: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.white,
     height: '100%',
   },
 
@@ -17,6 +17,10 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
 
+  headingContainer: {
+    marginBottom: 20,
+  },
+
   heading: {
     fontSize: 20,
     fontWeight: '500',
@@ -26,7 +30,7 @@ const styles = StyleSheet.create({
 
   welcome: {
     fontSize: 18,
-    color: '#000',
+    color: colors.black,
   },
 
   button: {
@@ -46,7 +50,15 @@ const styles = StyleSheet.create({
   },
 
   signupQuestion: {
-    color: '#000',
+    color: colors.black,
+  },
+
+  btnStyle: {
+    marginTop: 15,
+  },
+
+  btnTextStyle: {
+    fontSize: 18,
   },
 });
 

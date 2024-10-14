@@ -4,7 +4,7 @@ import colors from '@src/constants/colors';
 
 const styles = StyleSheet.create({
   signupFormContainer: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.white,
     height: '100%',
   },
 
@@ -13,15 +13,18 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     paddingHorizontal: 20,
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
   },
 
-  signupFormHeading: {
+  headingContainer: {
+    marginBottom: 20,
+  },
+
+  heading: {
     fontSize: 20,
-    fontWeight: '800',
+    fontWeight: '500',
     textAlign: 'center',
-    color: '#000',
-    marginVertical: 10,
+    color: colors.primary,
   },
 
   loginOptionContainer: {
@@ -38,8 +41,16 @@ const styles = StyleSheet.create({
   },
 
   loginQuestion: {
-    color: '#000',
+    color: colors.black,
     textAlign: 'center',
+  },
+
+  btnStyle: {
+    marginTop: 15,
+  },
+
+  btnTextStyle: {
+    fontSize: 18,
   },
 });
 

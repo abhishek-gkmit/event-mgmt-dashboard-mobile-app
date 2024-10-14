@@ -1,9 +1,13 @@
 import { ReactNode, RefObject } from 'react';
 import type {
+  StyleProp,
   TextInput,
   TextInputProps,
+  TextStyle,
   TouchableOpacityProps,
+  ViewStyle,
 } from 'react-native/types';
+
 declare global {
   interface Icon {
     name: string;
@@ -12,7 +16,7 @@ declare global {
   }
 
   interface InputComponentProps extends TextInputProps {
-    setValue?: (value: string) => void;
+    setValue: (value: string) => void;
     errorMsg?: string;
     label?: string;
     icon?: Icon;
@@ -20,8 +24,9 @@ declare global {
 
   interface ButtonComponentProps extends TouchableOpacityProps {
     title: string;
-    fontSize?: number;
+    btnTextStyle?: StyleProp<TextStyle>;
     color?: string;
+    btnStyle?: StyleProp<ViewStyle>;
   }
 
   interface DropdownItem {

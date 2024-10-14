@@ -8,6 +8,11 @@ const colors = {
   background2: 'rgba(0, 0, 0, 0.5)',
   warning: 'yellow',
   error: 'red',
+
+  black: 'black',
+  blackTransparent: 'rgba(0, 0, 0, 0)',
+  white: 'white',
+  gray: 'gray',
 } as const;
 
 export default colors;
