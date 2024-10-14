@@ -85,9 +85,13 @@ const Input = forwardRef(function Input(
         activeOpacity={1}
         onPress={() => setPasswordVisible(passwordVisible => !passwordVisible)}>
         {!passwordVisible ? (
-          <MaterialCommunityIcons name={'eye-off'} size={14} color="gray" />
+          <MaterialCommunityIcons
+            name={'eye-off'}
+            size={14}
+            color={colors.gray}
+          />
         ) : (
-          <MaterialCommunityIcons name={'eye'} size={14} color="gray" />
+          <MaterialCommunityIcons name={'eye'} size={14} color={colors.gray} />
         )}
       </TouchableOpacity>
     ) : null;
