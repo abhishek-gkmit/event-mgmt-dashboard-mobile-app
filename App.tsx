@@ -1,11 +1,7 @@
-import { Text, SafeAreaView } from 'react-native';
+import AuthNavigator from '@navigation/AuthNavigator';
 
 function App() {
-  return (
-    <SafeAreaView>
-      <Text>Event Management Dashboard</Text>
-    </SafeAreaView>
-  );
+  return <AuthNavigator />;
 }
 
 export default App;
