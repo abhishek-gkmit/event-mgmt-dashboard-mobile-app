@@ -1,24 +1,25 @@
-import colors from '@src/constants/colors';
 import { StyleSheet } from 'react-native';
+
+import colors from '@constants/colors';
 
 const styles = StyleSheet.create({
   dropdownBoxContainer: {
     flexDirection: 'column',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: colors.background2,
     gap: 10,
     justifyContent: 'center',
     height: '100%',
   },
   dropdownShowButton: {
     width: '100%',
-    backgroundColor: '#f1f4ff',
+    backgroundColor: colors.background,
     borderRadius: 10,
     padding: 10,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: 'rgba(255, 0, 0, 0)',
   },
   dropdownShowButtonError: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: 'rgba(255, 0, 0, 1)',
   },
   dropdownBox: {
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   dropdownItem: {
-    backgroundColor: '#f1f4ff',
+    backgroundColor: colors.background,
     padding: 10,
     marginLeft: 20,
     marginRight: 20,
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   errorMsg: {
-    color: '#f00',
+    color: colors.error,
     paddingHorizontal: 10,
     marginTop: 5,
     textAlign: 'right',

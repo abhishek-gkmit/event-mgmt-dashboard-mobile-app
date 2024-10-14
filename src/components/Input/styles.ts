@@ -1,15 +1,16 @@
-import colors from '@src/constants/colors';
 import { StyleSheet } from 'react-native';
+
+import colors from '@constants/colors';
 
 const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: '#f1f4ff',
+    backgroundColor: colors.background,
     borderRadius: 10,
     padding: 10,
     gap: 10,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0)',
     alignItems: 'center',
   },
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
   },
 
   errorMsg: {
-    color: '#f00',
+    color: colors.error,
     paddingHorizontal: 10,
     marginTop: 2,
     textAlign: 'right',

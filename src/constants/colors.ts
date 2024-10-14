@@ -4,6 +4,8 @@ const colors = {
   third: '#055c9d',
   fourth: '#68bbe3',
   fifth: '#1f41bb',
+  background: '#f1f4ff',
+  background2: 'rgba(0, 0, 0, 0.5)',
   warning: 'yellow',
   error: 'red',
 } as const;

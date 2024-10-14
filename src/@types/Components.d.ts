@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import { ReactNode, RefObject } from 'react';
 import type {
   TextInput,
   TextInputProps,
@@ -36,5 +36,12 @@ declare global {
     setValue: (value: string) => void;
     errorMsg?: stirng;
     label?: string;
+  }
+
+  interface DropdownBoxModalProps {
+    dropdownVisible: boolean;
+    name: string;
+    setDropdownVisible: (dropdownVisible: boolean) => void;
+    children: ReactNode[];
   }
 }
