@@ -8,7 +8,7 @@ declare global {
   type StackParamList = {
     Login: undefined;
     Signup: undefined;
-    BottomTabsNavigation: undefined;
+    BottomTabs: undefined;
   };
 
   type LoginScreenParamList = NativeStackScreenProps<StackParamList, 'Login'>;
@@ -17,7 +17,7 @@ declare global {
   type TabsParamList = {
     Dashboard: undefined;
     Profile: undefined;
-    EventListNavigation: undefined;
+    EventListStack: undefined;
   };
 
   type DashboardScreenParamList = BottomTabScreenProps<
@@ -26,7 +26,7 @@ declare global {
   >;
   type EventListNavigation = BottomTabScreenProps<
     TabsParamList,
-    'EventListNavigation'
+    'EventListStack'
   >;
   type ProfileScreenParamList = BottomTabScreenProps<TabsParamList, 'Profile'>;
 
@@ -51,4 +51,3 @@ declare global {
     'EditEvent'
   >;
 }
-import { NativeStackScreenProps } from '@react-navigation/native-stack';

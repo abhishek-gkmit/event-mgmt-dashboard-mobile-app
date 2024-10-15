@@ -8,9 +8,9 @@ import ROUTES from '@constants/routes';
 
 const EventListStack = createNativeStackNavigator<EventStackParamList>();
 
-function EventListStackNavigation() {
+function EventListNavigation() {
   return (
-    <EventListStack.Navigator initialRouteName="EventList">
+    <EventListStack.Navigator initialRouteName={ROUTES.EventList}>
       <EventListStack.Screen
         name={ROUTES.EventList}
         component={EventList}
@@ -22,4 +22,4 @@ function EventListStackNavigation() {
   );
 }
 
-export default EventListStackNavigation;
+export default EventListNavigation;

@@ -1,5 +1,5 @@
 interface LoginFormData {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -12,11 +12,7 @@ interface SignupFormData {
   gender: string;
   age: string;
   password: string;
-  confirmPassword: stirng;
+  confirmPassword: string;
 }
 
 type SignupFormErrors = Partial<SignupFormData>;
-
-interface User extends SignupFormData {
-  id?: string;
-}

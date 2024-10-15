@@ -127,7 +127,7 @@ function Signup({ navigation }: SignupScreenParamList) {
 
       try {
         delete formData.confirmPassword;
-        await API.addUser(formData);
+        await API.addUser({ ...formData, events: [] });
       } catch (err) {
         Alert.alert('There was some error in saving user data.');
         return;
@@ -135,7 +135,10 @@ function Signup({ navigation }: SignupScreenParamList) {
 
       // emptying erros after successful verification
       setErrors({});
-      Alert.alert('Signup successful');
+
+      Alert.alert('Signup successful. Please login to continue');
+
+      navigation.replace('Login');
     },
     [formData],
   );

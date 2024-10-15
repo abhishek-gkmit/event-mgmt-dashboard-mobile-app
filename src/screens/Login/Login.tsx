@@ -6,50 +6,57 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import {useEffect, useCallback, useRef, useState} from 'react';
+import { useEffect, useCallback, useRef, useState, useContext } from 'react';
 
 import Button from '@components/Button';
 import Input from '@components/Input';
 
 import colors from '@constants/colors';
-import {emailRegEx} from '@constants/regularExpressions';
+import { usernameRegEx } from '@constants/regularExpressions';
+import ROUTES from '@constants/routes';
 
 import styles from '@screens/Login/styles';
 
 import API from '@utility/UserAsyncStorage';
+import { UserContext } from '@src/contexts/UserContextProvider';
 
 const initLoginFormData: LoginFormData = {
-  email: '',
+  username: '',
   password: '',
 };
 
-function Login({navigation}: LoginScreenParamList) {
+function Login({ navigation }: LoginScreenParamList) {
   const [formData, setFormData] = useState(initLoginFormData);
   const [errors, setErrors] = useState<LoginFormErrors>({});
   const inputRef = useRef<TextInput>(null);
 
-  function handleChange(data: Partial<LoginFormData>) {
-    setFormData(formData => ({...formData, ...data}));
-  }
+  const { users, setLoggedInUserId } = useContext(UserContext);
+
+  const handleChange = useCallback(
+    function handleChange(data: Partial<LoginFormData>) {
+      setFormData(formData => ({ ...formData, ...data }));
+    },
+    [setFormData],
+  );
 
   const handleSubmit = useCallback(
     async function handleSubmit() {
       const errors: LoginFormErrors = {};
       let isError = false;
 
-      if (formData.email.trim() === '') {
-        errors.email = 'Please enter email';
+      if (formData.username.trim() === '') {
+        errors.username = 'Please enter email';
         isError = true;
-      } else if (!new RegExp(emailRegEx).test(formData.email)) {
-        errors.email = "Email should be of 'username@example.com' format";
+      } else if (!new RegExp(usernameRegEx).test(formData.username)) {
+        errors.username = 'Username should only contain A-Z, a-z, 0-9 and _';
         isError = true;
       }
 
       if (
         formData.password.trim() === '' ||
-        formData.password.trim().length < 4
+        formData.password.trim().length < 8
       ) {
-        errors.password = 'Password should be at least 4 letters long';
+        errors.password = 'Password should be at least 8 letters long';
         isError = true;
       }
 
@@ -58,9 +65,9 @@ function Login({navigation}: LoginScreenParamList) {
         return;
       }
 
-      const user = await API.getUserByEmail(formData.email);
+      const user = await API.getUserByUsername(users, formData.username);
       if (!user) {
-        Alert.alert('Email does not exists');
+        Alert.alert('Username does not exists');
         return;
       }
 
@@ -71,11 +78,10 @@ function Login({navigation}: LoginScreenParamList) {
 
       user.id && (await API.setLoggedInUser(user.id));
 
+      user.id && setLoggedInUserId(user.id);
+
       // clearing errors after successful verification
       setErrors({});
-      Alert.alert('Login successful');
-
-      navigation.navigate('BottomTabsNavigation');
     },
     [formData],
   );
@@ -95,14 +101,13 @@ function Login({navigation}: LoginScreenParamList) {
           </View>
 
           <Input
-            label="Email"
+            label="Username"
             autoCapitalize="none"
-            keyboardType="email-address"
-            placeholder="Enter email"
-            setValue={value => handleChange({email: value})}
-            icon={{name: 'email', color: colors.primary}}
+            placeholder="Enter username"
+            setValue={value => handleChange({ username: value })}
+            icon={{ name: 'at', color: colors.primary }}
             ref={inputRef}
-            errorMsg={errors.email}
+            errorMsg={errors.username}
           />
 
           <Input
@@ -110,9 +115,9 @@ function Login({navigation}: LoginScreenParamList) {
             inputMode="text"
             keyboardType="visible-password"
             placeholder="Enter password"
-            setValue={value => handleChange({password: value})}
+            setValue={value => handleChange({ password: value })}
             secureTextEntry
-            icon={{name: 'lock', color: colors.primary}}
+            icon={{ name: 'lock', color: colors.primary }}
             errorMsg={errors.password}
           />
 
