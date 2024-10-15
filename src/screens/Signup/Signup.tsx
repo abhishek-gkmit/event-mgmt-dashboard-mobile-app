@@ -35,7 +35,7 @@ const initSignupFormData: SignupFormData = {
   confirmPassword: '',
 };
 
-function Signup({ navigation }) {
+function Signup({ navigation }: SignupScreenParamList) {
   const [formData, setFormData] = useState(initSignupFormData);
   const [errors, setErrors] = useState<SignupFormErrors>({});
   const inputRef = useRef<TextInput>(null);

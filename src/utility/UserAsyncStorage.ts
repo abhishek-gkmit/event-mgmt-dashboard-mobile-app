@@ -5,8 +5,14 @@ import { USERS, LOGGED_IN_USER_ID } from '@constants/storageKeys';
 let usersArray: User[];
 let loggedInUserId: string;
 
+let isSetupDone = false;
+
 // IIFE to setup the storage variables
-(async function setup() {
+async function setup() {
+  if (isSetupDone) {
+    return;
+  }
+
   const usersString = await AsyncStorage.getItem(USERS);
 
   if (!usersString) {
@@ -25,21 +31,24 @@ let loggedInUserId: string;
     return;
   }
 
-  loggedInUserId = JSON.parse(loggedInUserIdString);
-})();
+  loggedInUserId = loggedInUserIdString;
+}
 
 async function getLoggedInUser(): Promise<User | null> {
+  await setup();
+
   if (loggedInUserId && loggedInUserId === '') {
     return null;
   }
 
   const userData = await getUserById(loggedInUserId);
-
   return userData;
 }
 
 async function getUserById(userId: string): Promise<User | null> {
-  const userData = usersArray.find(({ id }) => id === userId);
+  await setup();
+
+  const userData = usersArray?.find(({ id }) => id === userId);
 
   if (!userData) return null;
 
@@ -47,12 +56,16 @@ async function getUserById(userId: string): Promise<User | null> {
 }
 
 async function getUserByEmail(email: string) {
+  await setup();
+
   const userData = usersArray.find(({ email: userEmail }) => userEmail === email);
 
   return userData || null;
 }
 
 async function addUser(userData: User) {
+  await setup();
+
   // + '' is used here to convert miliseconds into string
   const userDataWithId: User = { ...userData, id: Date.now() + '' };
 
@@ -69,6 +82,8 @@ async function addUser(userData: User) {
 }
 
 async function updateUser(userData: User) {
+  await setup();
+
   if (!userData.id) {
     throw new Error('User does not have id');
   }
@@ -91,6 +106,8 @@ async function updateUser(userData: User) {
 }
 
 async function deleteUser(user: User) {
+  await setup();
+
   if (!user.id) {
     throw new Error('User does not have id');
   }
@@ -100,6 +117,8 @@ async function deleteUser(user: User) {
 }
 
 async function deleteUserWithId(userId: string) {
+  await setup();
+
   usersArray = usersArray.filter(({ id }) => id === userId);
 
   try {
@@ -113,6 +132,8 @@ async function deleteUserWithId(userId: string) {
 }
 
 async function usernameExists(username: string) {
+  await setup();
+
   const user = usersArray.find(({ username: uname }) => uname === username);
 
   // !! converts user into boolean
@@ -120,6 +141,8 @@ async function usernameExists(username: string) {
 }
 
 async function emailExists(email: string) {
+  await setup();
+
   const user = usersArray.find(({ email: userEmail }) => userEmail === email);
 
   // !! converts user into boolean
@@ -127,7 +150,15 @@ async function emailExists(email: string) {
 }
 
 async function setLoggedInUser(userId: string) {
+  await setup();
+
   await AsyncStorage.setItem(LOGGED_IN_USER_ID, userId);
+}
+
+async function resetLoggedInUser() {
+  await setup();
+
+  await AsyncStorage.removeItem(LOGGED_IN_USER_ID);
 }
 
 const API = {
@@ -139,6 +170,7 @@ const API = {
   emailExists,
   getUserByEmail,
   setLoggedInUser,
+  resetLoggedInUser,
 };
 
 export default API;

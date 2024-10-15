@@ -6,29 +6,30 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import { useEffect, useCallback, useRef, useState } from 'react';
+import {useEffect, useCallback, useRef, useState} from 'react';
 
 import Button from '@components/Button';
 import Input from '@components/Input';
 
 import colors from '@constants/colors';
-import { emailRegEx } from '@constants/regularExpressions';
+import {emailRegEx} from '@constants/regularExpressions';
 
 import styles from '@screens/Login/styles';
-import API from '@src/utility/UserAsyncStorage';
+
+import API from '@utility/UserAsyncStorage';
 
 const initLoginFormData: LoginFormData = {
   email: '',
   password: '',
 };
 
-function Login({ navigation }) {
+function Login({navigation}: LoginScreenParamList) {
   const [formData, setFormData] = useState(initLoginFormData);
   const [errors, setErrors] = useState<LoginFormErrors>({});
   const inputRef = useRef<TextInput>(null);
 
   function handleChange(data: Partial<LoginFormData>) {
-    setFormData(formData => ({ ...formData, ...data }));
+    setFormData(formData => ({...formData, ...data}));
   }
 
   const handleSubmit = useCallback(
@@ -73,6 +74,8 @@ function Login({ navigation }) {
       // clearing errors after successful verification
       setErrors({});
       Alert.alert('Login successful');
+
+      navigation.navigate('BottomTabsNavigation');
     },
     [formData],
   );
@@ -96,8 +99,8 @@ function Login({ navigation }) {
             autoCapitalize="none"
             keyboardType="email-address"
             placeholder="Enter email"
-            setValue={value => handleChange({ email: value })}
-            icon={{ name: 'email', color: colors.primary }}
+            setValue={value => handleChange({email: value})}
+            icon={{name: 'email', color: colors.primary}}
             ref={inputRef}
             errorMsg={errors.email}
           />
@@ -107,9 +110,9 @@ function Login({ navigation }) {
             inputMode="text"
             keyboardType="visible-password"
             placeholder="Enter password"
-            setValue={value => handleChange({ password: value })}
+            setValue={value => handleChange({password: value})}
             secureTextEntry
-            icon={{ name: 'lock', color: colors.primary }}
+            icon={{name: 'lock', color: colors.primary}}
             errorMsg={errors.password}
           />
 
