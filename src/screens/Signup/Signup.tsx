@@ -24,6 +24,7 @@ import colors from '@constants/colors';
 import API from '@utility/UserAsyncStorage';
 
 import styles from '@screens/Signup/styles';
+import ROUTES from '@src/constants/routes';
 
 const initSignupFormData: SignupFormData = {
   name: '',
@@ -35,7 +36,7 @@ const initSignupFormData: SignupFormData = {
   confirmPassword: '',
 };
 
-function Signup({ navigation }) {
+function Signup({ navigation }: SignupScreenParamList) {
   const [formData, setFormData] = useState(initSignupFormData);
   const [errors, setErrors] = useState<SignupFormErrors>({});
   const inputRef = useRef<TextInput>(null);
@@ -127,7 +128,7 @@ function Signup({ navigation }) {
 
       try {
         delete formData.confirmPassword;
-        await API.addUser(formData);
+        await API.addUser({ ...formData, events: [] });
       } catch (err) {
         Alert.alert('There was some error in saving user data.');
         return;
@@ -135,7 +136,10 @@ function Signup({ navigation }) {
 
       // emptying erros after successful verification
       setErrors({});
-      Alert.alert('Signup successful');
+
+      Alert.alert('Signup successful. Please login to continue');
+
+      navigation.replace(ROUTES.Login);
     },
     [formData],
   );
