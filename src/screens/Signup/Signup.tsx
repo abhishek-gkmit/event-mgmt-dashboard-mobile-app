@@ -24,6 +24,7 @@ import colors from '@constants/colors';
 import API from '@utility/UserAsyncStorage';
 
 import styles from '@screens/Signup/styles';
+import ROUTES from '@src/constants/routes';
 
 const initSignupFormData: SignupFormData = {
   name: '',
@@ -138,7 +139,7 @@ function Signup({ navigation }: SignupScreenParamList) {
 
       Alert.alert('Signup successful. Please login to continue');
 
-      navigation.replace('Login');
+      navigation.replace(ROUTES.Login);
     },
     [formData],
   );

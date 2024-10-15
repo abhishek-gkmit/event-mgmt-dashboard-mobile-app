@@ -1,4 +1,4 @@
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 
@@ -9,14 +9,14 @@ import globalStyles from '@src/styles/globalStyles';
 
 function App() {
   return (
-    <UserContextProvider>
-      <SafeAreaView
-        style={[globalStyles.viewStyle, globalStyles.safeAreaStyle]}>
+    <SafeAreaView
+      style={[globalStyles.flexContainer, globalStyles.bgContainer]}>
+      <UserContextProvider>
         <NavigationContainer>
           <MainNavigator />
         </NavigationContainer>
-      </SafeAreaView>
-    </UserContextProvider>
+      </UserContextProvider>
+    </SafeAreaView>
   );
 }
 
