@@ -98,13 +98,14 @@ const Input = forwardRef(function Input(
   }, [cprops, passwordVisible, setPasswordVisible]);
 
   const errorMsgText = useMemo(() => {
-    return textChanged ? (
-      <Text style={styles.errorMsg}> </Text>
-    ) : (
-      <Text style={styles.errorMsg}>
-        {errorMsg && errorMsg !== '' ? errorMsg : ' '}
-      </Text>
-    );
+    // return textChanged ? null : <Text style={styles.errorMsg}>{errorMsg}</Text>;
+    if (textChanged) {
+      return null;
+    } else if (errorMsg && errorMsg !== '') {
+      return <Text style={styles.errorMsg}>{errorMsg}</Text>;
+    } else {
+      return null;
+    }
   }, [errorMsg, textChanged]);
 
   const inputLabel = useMemo(() => {

@@ -6,10 +6,6 @@ module.exports = {
       {
         alias: {
           '@src': './src',
-          '@config': './src/config',
-          '@helpers': './src/helpers',
-          '@network': '.src/network',
-          '@theme': './src/theme',
           '@assets': './src/assets',
           '@constants': './src/constants',
           '@hooks': './src/hooks',

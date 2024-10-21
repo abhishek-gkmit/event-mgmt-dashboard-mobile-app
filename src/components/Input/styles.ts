@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
   errorMsg: {
     color: colors.error,
     paddingHorizontal: 10,
-    marginTop: 2,
-    textAlign: 'right',
+    marginVertical: 5,
+    textAlign: 'left',
     fontSize: 12,
   },
 });
