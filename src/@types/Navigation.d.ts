@@ -16,7 +16,7 @@ declare global {
 
   type TabsParamList = {
     Dashboard: undefined;
-    Profile: undefined;
+    ProfileStack: undefined;
     EventListStack: undefined;
   };
 
@@ -24,30 +24,53 @@ declare global {
     TabsParamList,
     'Dashboard'
   >;
+
   type EventListNavigation = BottomTabScreenProps<
     TabsParamList,
     'EventListStack'
   >;
-  type ProfileScreenParamList = BottomTabScreenProps<TabsParamList, 'Profile'>;
+
+  type ProfileStackNavigation = BottomTabScreenProps<
+    TabsParamList,
+    'ProfileStack'
+  >;
 
   type EventStackParamList = {
     EventList: undefined;
-    AddEvent: undefined;
-    EditEvent: {
-      eventId: string;
+    AddEditEvent: {
+      editEventId: string | null;
+    };
+    EventInfo: {
+      eventId: string | null;
     };
   };
 
-  type EventListStackParamList = NativeStackScreenProps<
+  type EventListScreenParamList = NativeStackScreenProps<
     EventStackParamList,
     'EventList'
   >;
-  type AddEventStackParamList = NativeStackScreenProps<
+
+  type AddEditEventScreenParamList = NativeStackScreenProps<
     EventStackParamList,
-    'AddEvent'
+    'AddEditEvent'
   >;
-  type EditEventStackParamList = NativeStackScreenProps<
+
+  type EventInfoScreenParamList = NativeStackScreenProps<
     EventStackParamList,
-    'EditEvent'
+    'EventInfo'
+  >;
+
+  type ProfileStackParamList = {
+    Profile: undefined;
+    Settings: undefined;
+  };
+
+  type ProfileScreenParamList = NativeStackScreenProps<
+    ProfileStackParamList,
+    'Profile'
+  >;
+  type SettingsScreenParamList = NativeStackScreenProps<
+    ProfileStackParamList,
+    'Settings'
   >;
 }

@@ -1,12 +1,7 @@
 interface Attendee {
-  id?: number;
+  id?: string;
   name: string;
   email: string;
-}
-
-interface AttendeeProps extends Attendee {
-  event: MainEvent;
-  deleteAttendee: (attendeeId: number) => void;
 }
 
 interface AttendeeFormHelperProps {
@@ -15,26 +10,31 @@ interface AttendeeFormHelperProps {
   eventId: number;
 }
 
-interface AttendeeListProps {
-  eventId: number;
-}
-
 type AttendeeFormData = Pick<Attendee, 'id' | 'name' | 'email'>;
+type AttendeeFormErrors = Partial<AttendeeFormData>;
 
 interface EventFormData {
   title: string;
   datetime: string;
   description: string;
-  attendees: number;
+  attendees: string;
   attendeeList: Attendee[];
   location: string;
 }
 
-interface EventFormHelperPropTypes {
-  initFormData: EventFormData;
+type EventFormErrors = Partial<EventFormData>;
+
+interface EventFormHelperProps {
+  initFormData: MainEvent;
   isEdit: boolean;
+  finish: () => void;
 }
 
 interface MainEvent extends EventFormData {
   id?: number;
+}
+
+interface EventCardProps {
+  event: MainEvent;
+  timeFormat: string;
 }

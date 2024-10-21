@@ -93,7 +93,7 @@ function Login({ navigation }: LoginScreenParamList) {
   return (
     <SafeAreaView style={styles.loginFormContainer}>
       <View style={styles.loginForm}>
-        <View>
+        <View style={{ gap: 10 }}>
           <View style={styles.headingContainer}>
             <Text style={styles.heading}>Login here</Text>
 
@@ -131,7 +131,7 @@ function Login({ navigation }: LoginScreenParamList) {
 
         <View style={styles.signupOptionContainer}>
           <Text style={styles.signupQuestion}>You don't have an account?</Text>
-          <TouchableOpacity onPress={() => navigation.replace('Signup')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
             <Text style={styles.signupOptionIndicator}>SignUp</Text>
           </TouchableOpacity>
         </View>

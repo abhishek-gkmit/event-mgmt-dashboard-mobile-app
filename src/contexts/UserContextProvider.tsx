@@ -17,14 +17,13 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
   const addEvent = useCallback(
     async function addEvent(eventData: MainEvent) {
       const newEvent = {
-        ...eventData,
+        ...(cloneObject(eventData) as MainEvent),
         id: Date.now(),
-        attendeeList: [],
       };
 
       loggedInUser.events.push(newEvent);
 
-      const newUsers = await API.updateUser(users, cloneObject(loggedInUser));
+      const newUsers = await API.updateUser(users, loggedInUser);
       setUsers(newUsers);
     },
     [loggedInUser],
@@ -38,7 +37,7 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 
       loggedInUser.events = newEvents;
 
-      const newUsers = await API.updateUser(users, cloneObject(loggedInUser));
+      const newUsers = await API.updateUser(users, loggedInUser);
       setUsers(newUsers);
     },
     [loggedInUser],
@@ -56,7 +55,7 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 
       loggedInUser.events = newEvents;
 
-      const newUsers = await API.updateUser(users, cloneObject(loggedInUser));
+      const newUsers = await API.updateUser(users, loggedInUser);
       setUsers(newUsers);
     },
     [loggedInUser],
@@ -68,14 +67,22 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
       setLoggedInUser(loggedInUser);
       setEvents(loggedInUser.events);
     }
-  }, [users]);
+  }, [users, loggedInUserId]);
 
   useEffect(() => {
-    API.getAllUsers().then(users => setUsers(users));
+    (async () => {
+      const users = await API.getAllUsers();
 
-    API.getLoggedInUserId().then(loggedInUserId =>
-      setLoggedInUserId(loggedInUserId),
-    );
+      const loggedInUserId = await API.getLoggedInUserId();
+
+      setUsers(users);
+
+      if (loggedInUserId) {
+        setLoggedInUserId(loggedInUserId);
+      } else {
+        setLoggedInUserId('no_user');
+      }
+    })();
   }, []);
 
   return (
@@ -88,7 +95,8 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
         addEvent,
         updateEvent,
         deleteEvent,
-        setLoggedInUserId: (userId: string) => setLoggedInUserId(userId),
+        setLoggedInUserId: (userId: string | null) => setLoggedInUserId(userId),
+        setUsers: (users: Users) => setUsers(users),
       }}>
       {children}
     </UserContext.Provider>

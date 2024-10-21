@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     gap: 5,
     justifyContent: 'center',
     marginTop: 5,
+    marginBottom: 20,
   },
 
   signupOptionIndicator: {

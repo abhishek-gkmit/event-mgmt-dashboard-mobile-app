@@ -102,14 +102,18 @@ export function filterEventsWithFilter(
     case 'this-week':
       return events.filter(({ datetime }) => {
         // + is used here to convert the date objects into number(miliseconds) to compare them
-        const eventDate = new Date(datetime.split('T')[0] + 'T00:00');
+        const eventDate = new Date(
+          formatDate(new Date(datetime)).split('T')[0] + 'T00:00',
+        );
         return +date <= +eventDate && +eventDate <= +getWeekEndDate(date);
       });
 
     case 'this-month':
       return events.filter(({ datetime }) => {
         // + is used here to convert the date objects into number(miliseconds) to compare them
-        const eventDate = new Date(datetime.split('T')[0] + 'T00:00');
+        const eventDate = new Date(
+          formatDate(new Date(datetime)).split('T')[0] + 'T00:00',
+        );
         return +date <= +eventDate && +eventDate <= +getMonthEndDate(date);
       });
 
@@ -117,7 +121,7 @@ export function filterEventsWithFilter(
       return events.filter(({ datetime }) => {
         // + is used here to convert the date objects into number(miliseconds) to compare them
         return (
-          +new Date(datetime.split('T')[0] + 'T00:00') ===
+          +new Date(formatDate(new Date(datetime)).split('T')[0] + 'T00:00') ===
           +new Date(date.getFullYear(), date.getMonth(), date.getDate())
         );
       });
@@ -157,6 +161,12 @@ export function sortEvents(events: MainEvent[], sortBy: string): MainEvent[] {
       });
   }
   return events;
+}
+
+export function searchEvents(events: MainEvent[], searchText: string) {
+  return events.filter(event => {
+    return event.title.includes(searchText);
+  });
 }
 
 export function formatDate(date: Date) {

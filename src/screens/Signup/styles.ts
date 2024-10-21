@@ -4,20 +4,14 @@ import colors from '@src/constants/colors';
 
 const styles = StyleSheet.create({
   signupFormContainer: {
+    flex: 1,
     backgroundColor: colors.white,
+    paddingHorizontal: 20,
     height: '100%',
   },
 
-  signupForm: {
-    flex: 1,
-    flexDirection: 'column',
-    width: '100%',
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
-  },
-
   headingContainer: {
-    marginBottom: 20,
+    marginVertical: 20,
   },
 
   heading: {
@@ -30,8 +24,8 @@ const styles = StyleSheet.create({
   loginOptionContainer: {
     marginTop: 5,
     flexDirection: 'row',
-    gap: 5,
     justifyContent: 'center',
+    marginBottom: 10,
   },
 
   loginOptionIndicator: {

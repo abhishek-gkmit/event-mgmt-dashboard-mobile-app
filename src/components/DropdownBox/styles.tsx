@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   dropdownItemSelected: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.fourth,
   },
   dropdownItemText: {
     width: '100%',
@@ -74,7 +74,15 @@ const styles = StyleSheet.create({
   },
 
   btnTextStyle: {
-    fontSize: 18,
+    fontSize: 14,
+  },
+
+  cancelBtn: {
+    width: 100,
+  },
+
+  cancelBtnContainer: {
+    alignItems: 'center',
   },
 });
 

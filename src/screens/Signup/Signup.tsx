@@ -5,8 +5,11 @@ import {
   Alert,
   TouchableOpacity,
   TextInput,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useContext } from 'react';
 
 import Button from '@components/Button';
 import Input from '@components/Input';
@@ -20,11 +23,13 @@ import {
   passwordRegEx,
 } from '@constants/regularExpressions';
 import colors from '@constants/colors';
+import ROUTES from '@constants/routes';
 
 import API from '@utility/UserAsyncStorage';
 
+import { UserContext } from '@contexts/UserContextProvider';
+
 import styles from '@screens/Signup/styles';
-import ROUTES from '@src/constants/routes';
 
 const initSignupFormData: SignupFormData = {
   name: '',
@@ -40,6 +45,8 @@ function Signup({ navigation }: SignupScreenParamList) {
   const [formData, setFormData] = useState(initSignupFormData);
   const [errors, setErrors] = useState<SignupFormErrors>({});
   const inputRef = useRef<TextInput>(null);
+
+  const { users, setUsers } = useContext(UserContext);
 
   function handleChange(data: Partial<SignupFormData>) {
     setFormData(formData => ({ ...formData, ...data }));
@@ -114,13 +121,13 @@ function Signup({ navigation }: SignupScreenParamList) {
         return;
       }
 
-      const emailExists = await API.emailExists(formData.email);
+      const emailExists = await API.emailExists(users, formData.email);
       if (emailExists) {
         Alert.alert('Email already exists. Please use a different email');
         return;
       }
 
-      const usernameExists = await API.usernameExists(formData.username);
+      const usernameExists = await API.usernameExists(users, formData.username);
       if (usernameExists) {
         Alert.alert('Username already exists. Please use a different username');
         return;
@@ -128,7 +135,12 @@ function Signup({ navigation }: SignupScreenParamList) {
 
       try {
         delete formData.confirmPassword;
-        await API.addUser({ ...formData, events: [] });
+        const newUsers = await API.addUser(users, {
+          ...formData,
+          events: [],
+          settings: { filter: 'today', sortBy: 'datetime', timeFormat: '12' },
+        });
+        setUsers(newUsers);
       } catch (err) {
         Alert.alert('There was some error in saving user data.');
         return;
@@ -149,106 +161,115 @@ function Signup({ navigation }: SignupScreenParamList) {
   }, []);
 
   return (
-    <SafeAreaView style={styles.signupFormContainer}>
-      <View style={styles.signupForm}>
-        <View>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading]}>Sign-Up</Text>
+    <>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={50}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.signupFormContainer}>
+        <View style={styles.headingContainer}>
+          <Text style={[styles.heading]}>Sign-Up</Text>
+        </View>
+
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          showsVerticalScrollIndicator={false}>
+          <View style={{ justifyContent: 'space-between' }}>
+            <View style={{ gap: 10 }}>
+              <Input
+                label="Full Name"
+                autoCapitalize="none"
+                placeholder="Enter full name"
+                value={formData.name}
+                setValue={value => handleChange({ name: value })}
+                icon={{ name: 'alpha-a-box', color: colors.primary }}
+                ref={inputRef}
+                errorMsg={errors.name}
+              />
+
+              <Input
+                label="Email"
+                autoCapitalize="none"
+                keyboardType="email-address"
+                placeholder="Enter email"
+                value={formData.email}
+                setValue={value => handleChange({ email: value })}
+                icon={{ name: 'email', color: colors.primary }}
+                errorMsg={errors.email}
+              />
+
+              <DropdownBox
+                name="Select Gender"
+                label="Gender"
+                items={[
+                  { value: 'male', name: 'Male' },
+                  { value: 'female', name: 'Female' },
+                  { value: 'other', name: 'Other' },
+                ]}
+                value={formData.gender}
+                setValue={value => handleChange({ gender: value })}
+                errorMsg={errors.gender}
+              />
+
+              <Input
+                label="Username"
+                autoCapitalize="none"
+                placeholder="Enter username"
+                value={formData.username}
+                setValue={value => handleChange({ username: value })}
+                icon={{ name: 'at', color: colors.primary }}
+                errorMsg={errors.username}
+              />
+
+              <Input
+                label="Age"
+                inputMode="numeric"
+                placeholder="Enter age"
+                value={formData.age}
+                setValue={value => handleChange({ age: value })}
+                icon={{ name: 'account', color: colors.primary }}
+                errorMsg={errors.age}
+              />
+
+              <Input
+                label="Password"
+                inputMode="text"
+                placeholder="Enter password"
+                value={formData.password}
+                setValue={value => handleChange({ password: value })}
+                secureTextEntry
+                icon={{ name: 'lock', color: colors.primary }}
+                errorMsg={errors.password}
+              />
+
+              <Input
+                label="Confirm Password"
+                inputMode="text"
+                placeholder="Confirm password"
+                value={formData.confirmPassword}
+                setValue={value => handleChange({ confirmPassword: value })}
+                secureTextEntry
+                icon={{ name: 'lock', color: colors.primary }}
+                errorMsg={errors.confirmPassword}
+              />
+
+              <Button
+                title="Sign up"
+                onPress={handleSubmit}
+                btnStyle={styles.btnStyle}
+                btnTextStyle={styles.btnTextStyle}
+              />
+            </View>
+
+            <View style={styles.loginOptionContainer}>
+              <Text style={styles.loginQuestion}>You have an account? </Text>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Text style={styles.loginOptionIndicator}> Login</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-
-          <Input
-            label="Full Name"
-            autoCapitalize="none"
-            placeholder="Enter full name"
-            value={formData.name}
-            setValue={value => handleChange({ name: value })}
-            icon={{ name: 'alpha-a-box', color: colors.primary }}
-            ref={inputRef}
-            errorMsg={errors.name}
-          />
-
-          <Input
-            label="Email"
-            autoCapitalize="none"
-            keyboardType="email-address"
-            placeholder="Enter email"
-            value={formData.email}
-            setValue={value => handleChange({ email: value })}
-            icon={{ name: 'email', color: colors.primary }}
-            errorMsg={errors.email}
-          />
-
-          <DropdownBox
-            name="Select Gender"
-            label="Gender"
-            items={[
-              { value: 'male', name: 'Male' },
-              { value: 'female', name: 'Female' },
-              { value: 'other', name: 'Other' },
-            ]}
-            value={formData.gender}
-            setValue={value => handleChange({ gender: value })}
-            errorMsg={errors.gender}
-          />
-
-          <Input
-            label="Username"
-            autoCapitalize="none"
-            placeholder="Enter username"
-            value={formData.username}
-            setValue={value => handleChange({ username: value })}
-            icon={{ name: 'at', color: colors.primary }}
-            errorMsg={errors.username}
-          />
-
-          <Input
-            label="Age"
-            inputMode="numeric"
-            placeholder="Enter age"
-            value={formData.age}
-            setValue={value => handleChange({ age: value })}
-            icon={{ name: 'account', color: colors.primary }}
-            errorMsg={errors.age}
-          />
-
-          <Input
-            label="Password"
-            inputMode="text"
-            placeholder="Enter password"
-            value={formData.password}
-            setValue={value => handleChange({ password: value })}
-            secureTextEntry
-            icon={{ name: 'lock', color: colors.primary }}
-            errorMsg={errors.password}
-          />
-
-          <Input
-            label="Confirm Password"
-            inputMode="text"
-            placeholder="Confirm password"
-            value={formData.confirmPassword}
-            setValue={value => handleChange({ confirmPassword: value })}
-            secureTextEntry
-            icon={{ name: 'lock', color: colors.primary }}
-            errorMsg={errors.confirmPassword}
-          />
-
-          <Button
-            title="Sign up"
-            onPress={handleSubmit}
-            btnStyle={styles.btnStyle}
-            btnTextStyle={styles.btnTextStyle}
-          />
-        </View>
-
-        <View style={styles.loginOptionContainer}>
-          <Text style={styles.loginQuestion}>You have an account?</Text>
-          <TouchableOpacity onPress={() => navigation.replace('Login')}>
-            <Text style={styles.loginOptionIndicator}>Login</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </>
   );
 }
 

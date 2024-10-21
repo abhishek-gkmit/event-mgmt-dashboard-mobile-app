@@ -50,10 +50,11 @@ async function getUserByUsername(usersArray: Users, username: string) {
 
 async function addUser(usersArray: Users, userData: User) {
   // + '' is used here to convert miliseconds into string
-  const userDataWithId: User = cloneObject(userData);
+  const userDataWithId: User = cloneObject(userData) as User;
   userDataWithId.id = Date.now() + '';
 
-  usersArray = cloneObject(usersArray);
+  usersArray = cloneObject(usersArray) as Users;
+  usersArray.push(userDataWithId);
 
   try {
     await AsyncStorage.setItem(USERS, JSON.stringify(usersArray));
@@ -71,7 +72,8 @@ async function updateUser(usersArray: Users, userData: User) {
 
   usersArray = usersArray.map(user => {
     if (user.id === userData.id) {
-      return cloneObject(userData);
+      const clonedObject = cloneObject(userData) as User;
+      return clonedObject;
     }
     return user;
   });
@@ -106,14 +108,14 @@ async function deleteUserWithId(usersArray: Users, userId: string) {
 }
 
 async function usernameExists(usersArray: Users, username: string) {
-  const user = usersArray.find(({ username: uname }) => uname === username);
+  const user = usersArray?.find(({ username: uname }) => uname === username);
 
   // !! converts user into boolean
   return !!user;
 }
 
 async function emailExists(usersArray: Users, email: string) {
-  const user = usersArray.find(({ email: userEmail }) => userEmail === email);
+  const user = usersArray?.find(({ email: userEmail }) => userEmail === email);
 
   // !! converts user into boolean
   return !!user;
@@ -125,6 +127,29 @@ async function setLoggedInUser(userId: string) {
 
 async function resetLoggedInUser() {
   await AsyncStorage.removeItem(LOGGED_IN_USER_ID);
+}
+
+async function resetUserData(usersArray: Users, userId: string | undefined) {
+  if (!userId || !usersArray) {
+    return usersArray;
+  }
+
+  usersArray = usersArray.map(user => {
+    if (user.id === userId) {
+      user.events = [];
+      user.settings = { filter: 'today', sortBy: 'datetime', timeFormat: '12' };
+      return cloneObject(user) as User;
+    }
+    return user;
+  });
+
+  try {
+    await AsyncStorage.setItem(USERS, JSON.stringify(usersArray));
+  } catch (err) {
+    console.error(err);
+  }
+
+  return usersArray;
 }
 
 const API = {
@@ -140,6 +165,7 @@ const API = {
   setLoggedInUser,
   resetLoggedInUser,
   getUserByUsername,
+  resetUserData,
 };
 
 export default API;

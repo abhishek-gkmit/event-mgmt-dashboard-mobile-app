@@ -26,11 +26,14 @@ function DropdownBoxModal({
         <View style={styles.dropdownBox}>
           <Text style={styles.dropdownHeading}>{name}</Text>
           {children}
-          <Button
-            title="Cancel"
-            btnTextStyle={styles.btnTextStyle}
-            onPress={() => setDropdownVisible(false)}
-          />
+          <View style={styles.cancelBtnContainer}>
+            <Button
+              title="Cancel"
+              btnTextStyle={styles.btnTextStyle}
+              btnStyle={styles.cancelBtn}
+              onPress={() => setDropdownVisible(false)}
+            />
+          </View>
         </View>
       </SafeAreaView>
     </Modal>
@@ -71,8 +74,9 @@ function DropdownBox({
     return items.map(({ name, value: itemValue }) => {
       return (
         <TouchableHighlight
+          key={name + Math.random() * 1000}
           activeOpacity={0.9}
-          underlayColor={colors.primary}
+          underlayColor={colors.fourth}
           style={
             value === itemValue
               ? [styles.dropdownItem, styles.dropdownItemSelected]

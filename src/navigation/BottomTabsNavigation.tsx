@@ -8,17 +8,26 @@ import ROUTES from '@constants/routes';
 import colors from '@constants/colors';
 
 import EventListNavigation from '@navigation/EventListStack';
+import ProfileStackNavitagion from '@navigation/ProfileStack';
 
 const BottomTabs = createBottomTabNavigator<TabsParamList>();
 
 function BottomTabsNavigation() {
   return (
-    <BottomTabs.Navigator initialRouteName={ROUTES.Dashboard}>
+    <BottomTabs.Navigator
+      initialRouteName={ROUTES.Dashboard}
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          paddingVertical: 0,
+          height: 70,
+        },
+        tabBarLabelStyle: { marginBottom: 10, fontSize: 14, color: colors.black },
+      }}>
       <BottomTabs.Screen
         name={ROUTES.Dashboard}
         component={Dashboard}
         options={{
-          headerShown: false,
           tabBarIcon: ({ focused, size }) => (
             <MaterialCommunityIcons
               name="home"
@@ -43,8 +52,8 @@ function BottomTabsNavigation() {
         }}
       />
       <BottomTabs.Screen
-        name={ROUTES.Profile}
-        component={Profile}
+        name={ROUTES.ProfileStack}
+        component={ProfileStackNavitagion}
         options={{
           title: 'Profile',
           tabBarIcon: ({ focused, size }) => (
